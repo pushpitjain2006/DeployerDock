@@ -15,7 +15,6 @@ const hero1 = async () => {
       await new Promise((resolve) => setTimeout(resolve, waitingTime * 1000));
       if (waitingTime < 60) {
         waitingTime += 1;
-        
       }
     }
   }
