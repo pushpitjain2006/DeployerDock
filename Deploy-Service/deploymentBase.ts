@@ -77,11 +77,9 @@ export const downloadS3repo = async (
         writeStream.on("finish", resolve);
       });
       // console.log("File downloaded successfully");
-      return filePath;
     }
   } else {
     console.log("No objects in the bucket or the key is incorrect");
-    return null;
   }
 };
 
@@ -96,6 +94,7 @@ export const deployer = async (repoId: string) => {
   const bucketName = process.env.BUCKET_NAME || "Default Bucket Name";
   const key = "output/" + repoId;
   await downloadS3repo(s3Client, bucketName, key);
+  await buildProject(repoId);
 };
 
 if (require.main === module) {
