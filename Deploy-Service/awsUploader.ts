@@ -52,6 +52,7 @@ const s3Client = new S3Client({
 export const uploadFile = async (fileName: string, localFilePath: string) => {
   //fileName = output/12ae3../index.html
   //filePath = Users/username/vercel-clone/output/12ae3../index.html i.e. (__dirname + "/" + fileName)
+  console.log(localFilePath);
   getAllFiles(localFilePath).forEach(async (filePath) => {
     const fileContent = fs.readFileSync(filePath);
     const params = {
