@@ -7,6 +7,7 @@ import { config } from "dotenv";
 import fs from "fs";
 import path from "path";
 import { Readable } from "stream";
+import { buildProject } from "./buildingRepo";
 
 config();
 
@@ -66,7 +67,7 @@ export const downloadS3repo = async (
       //console.log(path.join(__dirname , "output"));
       const filePath = path.join(__dirname, object.Key);
       // console.log(object.Key);
-      console.log(filePath);
+      // console.log(filePath);
       if (!fs.existsSync(path.dirname(filePath))) {
         fs.mkdirSync(path.dirname(filePath), { recursive: true });
       }
@@ -94,7 +95,17 @@ export const deployer = async (repoId: string) => {
   });
   const bucketName = process.env.BUCKET_NAME || "Default Bucket Name";
   const key = "output/" + repoId;
-  await downloadS3repo(s3Client, bucketName, key);
+  await downloadS3repo(s3Client, bucketName, key).then(async (filePath) => {
+    if (filePath) {
+      await buildProject(repoId)
+        .then(() => {
+          console.log("Build Success");
+        })
+        .catch(() => {
+          console.log("Build Failed");
+        });
+    }
+  });
 };
 
 if (require.main === module) {
