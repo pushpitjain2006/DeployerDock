@@ -8,6 +8,7 @@ import fs from "fs";
 import path from "path";
 import { Readable } from "stream";
 import { buildProject } from "./buildingRepo";
+import { uploadFile } from "./awsUploader";
 
 config();
 
@@ -93,8 +94,12 @@ export const deployer = async (repoId: string) => {
   });
   const bucketName = process.env.BUCKET_NAME || "Default Bucket Name";
   const key = "output/" + repoId;
-  await downloadS3repo(s3Client, bucketName, key);
-  await buildProject(repoId);
+  // await downloadS3repo(s3Client, bucketName, key);
+  // await buildProject(repoId);
+  await uploadFile(
+    path.join("output", repoId, "dist"),
+    path.join(__dirname, "output", repoId, "venttup", "frontend", "dist")
+  );
 };
 
 if (require.main === module) {
