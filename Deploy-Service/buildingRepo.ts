@@ -16,7 +16,7 @@ export async function buildProject(id: string) {
       if (code === 0) {
         resolve("");
       } else {
-        reject();
+        reject(new Error(`Build failed with exit code ${code}`));
       }
     });
   });
@@ -27,7 +27,7 @@ if (require.main === module) {
     .then(() => {
       console.log("Build Success");
     })
-    .catch(() => {
-      console.log("Build Failed");
+    .catch((error) => {
+      console.error("Build Failed:", error.message);
     });
 }
