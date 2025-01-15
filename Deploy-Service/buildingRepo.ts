@@ -8,7 +8,12 @@ import path from "path";
 
 export async function buildProject(id: string) {
   const child = exec(
-    `cd ${path.join(__dirname, "output", id)} && npm install && npm run build`
+    `cd ${path.join(
+      __dirname,
+      "output",
+      "backend",
+      id
+    )} && npm install && npm run build`
   );
   child.stdout?.on("data", (data) => {
     console.log("stdout :", data);
