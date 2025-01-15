@@ -1,5 +1,6 @@
 import { exec } from "child_process";
 import path from "path";
+import { uploadFile } from "./awsUploader";
 
 // Problem is that maybe the project is not in the root folder , there could be a repo like repo/frontend and repo/backend, for no as we are trying to send the npm so i am assuming it is only for backend for now so we need to build this in the backend folder
 // solution for now is try using the base as output/id/backend/ for running the npm build in the test repo
@@ -25,6 +26,7 @@ export async function buildProject(id: string) {
   return new Promise((resolve, reject) => {
     child.on("exit", (code) => {
       if (code === 0) {
+        uploadFile("","");
         resolve("");
       } else {
         reject(new Error(`Build failed with exit code ${code}`));
