@@ -1,5 +1,6 @@
 import dotenv from "dotenv";
 import { sqsPopper } from "./sqsPopper";
+import { deployer } from "./deploymentBase";
 
 dotenv.config();
 
@@ -10,10 +11,11 @@ const hero1 = async () => {
     if (x) {
       console.log(x);
       waitingTime = 5;
+      deployer(x);
     } else {
-      console.log("No Message, waiting for ", waitingTime, " seconds\n");
+      console.log("No More Message, waiting for ", waitingTime, " seconds\n");
       await new Promise((resolve) => setTimeout(resolve, waitingTime * 1000));
-      if (waitingTime < 60) {
+      if (waitingTime < 10) {
         waitingTime += 1;
       }
     }

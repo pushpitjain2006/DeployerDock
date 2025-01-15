@@ -11,7 +11,7 @@ const sqsClient = new SQS({
   },
 });
 
-export const sqsPopper = async () => {
+export const sqsPopper = async (): Promise<string | undefined> => {
   try {
     // console.log("Getting from Queue");
     const data = await sqsClient.receiveMessage({
@@ -27,19 +27,20 @@ export const sqsPopper = async () => {
         });
       } catch (error) {
         console.log("Error in deleting message", error);
-        return error;
+        return undefined;
       }
       return data.Messages[0].Body;
     }
-    // console.log("No Messages");
-    return null;
+    return undefined;
   } catch (err) {
     console.log("Error :\n", err);
-    return err;
+    return undefined;
   }
 };
 
 if (require.main === module) {
-  const op = async ()=>{console.log(await sqsPopper());}
+  const op = async () => {
+    console.log(await sqsPopper());
+  };
   op();
 }
