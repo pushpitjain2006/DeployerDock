@@ -12,8 +12,6 @@ const hero1 = async () => {
       console.log(x);
       waitingTime = 5;
       await deployer(x);
-      // wait till the deployer is finised
-      
     } else {
       console.log("No More Message, waiting for ", waitingTime, " seconds\n");
       await new Promise((resolve) => setTimeout(resolve, waitingTime * 1000));
