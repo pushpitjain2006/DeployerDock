@@ -26,8 +26,15 @@ export async function buildProject(id: string) {
   return new Promise((resolve, reject) => {
     child.on("exit", (code) => {
       if (code === 0) {
-        uploadFile("","");
-        resolve("");
+        const uploaderFunc = async () => {
+          await uploadFile(
+            path.join("output", "id", "dist"),
+            path.join(__dirname, "output", id, "venttup", "frontend", "dist")
+          ).then(() => {
+            resolve("");
+          });
+        };
+        uploaderFunc();
       } else {
         reject(new Error(`Build failed with exit code ${code}`));
       }
