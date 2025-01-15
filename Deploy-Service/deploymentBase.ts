@@ -34,7 +34,6 @@ export const downloadS3repo = async (
   //   if (!fs.existsSync(path.dirname(filePath))) {
   //     fs.mkdirSync(path.dirname(filePath), { recursive: true });
   //   }
-
   //   const stream = file.Body as NodeJS.ReadableStream;
   //   const writeStream = fs.createWriteStream(filePath);
   //   stream.pipe(writeStream);
@@ -43,22 +42,15 @@ export const downloadS3repo = async (
   //   });
   // }
 
-  if (objects.Contents && objects.Contents.length > 0) {
-    console.log(objects.Contents[0] + "\n");
-  } else {
-    console.log("No contents found in the bucket.");
-  }
-  // objects is something like -
-  console.log(objects.Contents);
+  // if (objects.Contents && objects.Contents.length > 0) {
+  //   console.log(objects.Contents[0] + "\n");
+  // } else {
+  //   console.log("No contents found in the bucket.");
+  // }
+  // objects is something like - { Contents: [ { Key: 'output/OclEiqAu0P' } ] }
+  // console.log(objects.Contents);
   if (objects.Contents) {
-    for (
-      let i =
-        // 0
-        5;
-      i < 6;
-      // objects.Contents.length
-      i++
-    ) {
+    for (let i = 0; i < objects.Contents.length; i++) {
       const object = objects.Contents[i];
       // console.log(object);
       if (!object.Key) continue;
