@@ -27,6 +27,7 @@ config();
 //   }
 // };
 const getAllFiles = (directoryBasePath: string) => {
+  console.log(directoryBasePath);
   const response: string[] = [];
   const filesInDirectory = fs.readdirSync(directoryBasePath);
   filesInDirectory.forEach((file) => {
