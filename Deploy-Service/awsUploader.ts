@@ -60,7 +60,7 @@ export const uploadFile = async (fileName: string, localFilePath: string) => {
     };
     try {
       await s3Client.send(new PutObjectCommand(params));
-      console.log(`Uploaded ${filePath.slice(__dirname.length + 1)}`);
+      // console.log(`Uploaded ${filePath.slice(__dirname.length + 1)}`);
     } catch (error) {
       console.error(`Error uploading ${fileName}`);
       console.error(error);
