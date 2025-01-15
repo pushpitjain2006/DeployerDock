@@ -1,10 +1,10 @@
 import fs from "fs";
 import { config } from "dotenv";
 import { PutObjectCommand, S3Client } from "@aws-sdk/client-s3";
+import path from "path";
 // import { S3 } from "aws-sdk";
 
 config();
-
 
 // const s3 = new S3({
 //   accessKeyId: process.env.AWS_ACCESS_KEY_ID,
@@ -26,6 +26,19 @@ config();
 //     console.error(error);
 //   }
 // };
+const getAllFiles = (directoryBasePath: string) => {
+  const response: string[] = [];
+  const filesInDirectory = fs.readdirSync(directoryBasePath);
+  filesInDirectory.forEach((file) => {
+    const fullFilePath = path.join(directoryBasePath, file);
+    if (fs.statSync(fullFilePath).isDirectory()) {
+      response.push(...getAllFiles(fullFilePath));
+    } else {
+      response.push(fullFilePath);
+    }
+  });
+  return response;
+};
 
 const s3Client = new S3Client({
   region: process.env.AWS_REGION || "ap-south-1",
@@ -35,22 +48,22 @@ const s3Client = new S3Client({
   },
 });
 
-
 export const uploadFile = async (fileName: string, localFilePath: string) => {
   //fileName = output/12ae3../index.html
   //filePath = Users/username/vercel-clone/output/12ae3../index.html i.e. (__dirname + "/" + fileName)
-  console.log(fileName);
-  console.log(localFilePath);
-  const command = new PutObjectCommand({
-    Bucket: process.env.BUCKET_NAME,
-    Key: fileName,
-    Body: fs.createReadStream(localFilePath),
+  getAllFiles(localFilePath).forEach(async (filePath) => {
+    const fileContent = fs.readFileSync(filePath);
+    const params = {
+      Bucket: process.env.BUCKET_NAME || "",
+      Key: fileName,
+      Body: fileContent,
+    };
+    try {
+      await s3Client.send(new PutObjectCommand(params));
+      console.log(`Uploaded ${fileName}`);
+    } catch (error) {
+      console.error(`Error uploading ${fileName}`);
+      console.error(error);
+    }
   });
-  try {
-    await s3Client.send(command);
-    // console.log(`Uploaded ${fileName}`);
-  } catch (error) {
-    console.error(`Error uploading ${fileName}`);
-    console.error(error);
-  }
 };
