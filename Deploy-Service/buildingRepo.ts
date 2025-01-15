@@ -11,8 +11,9 @@ export async function buildProject(id: string) {
     `cd ${path.join(
       __dirname,
       "output",
-      "backend",
-      id
+      id,
+      "venttup",
+      "backend"
     )} && npm install && npm run build`
   );
   child.stdout?.on("data", (data) => {
