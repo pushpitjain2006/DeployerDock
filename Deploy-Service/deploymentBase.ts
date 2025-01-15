@@ -102,7 +102,7 @@ export const deployer = async (repoId: string) => {
   // );
   await uploadFile(
     path.join("output", repoId, "dist"),
-    path.join(__dirname, "output", repoId, "venttup", "frontend", "dist")
+    path.join(__dirname, "output", repoId, "venttup", "Frontend", "dist")
   );
 };
 

@@ -14,7 +14,7 @@ export async function buildProject(id: string) {
       "output",
       id,
       "venttup",
-      "frontend"
+      "Frontend"
     )} && npm install && npm run build`
   );
   child.stdout?.on("data", (data) => {
