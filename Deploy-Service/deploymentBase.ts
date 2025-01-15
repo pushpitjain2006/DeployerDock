@@ -76,9 +76,11 @@ export const downloadS3repo = async (
         writeStream.on("finish", resolve);
       });
       // console.log("File downloaded successfully");
+      return filePath;
     }
   } else {
     console.log("No objects in the bucket or the key is incorrect");
+    return null;
   }
 };
 
