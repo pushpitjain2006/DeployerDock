@@ -94,8 +94,8 @@ export const deployer = async (repoId: string) => {
   });
   const bucketName = process.env.BUCKET_NAME || "Default Bucket Name";
   const key = "output/" + repoId;
-  // await downloadS3repo(s3Client, bucketName, key);
-  // await buildProject(repoId);
+  await downloadS3repo(s3Client, bucketName, key);
+  await buildProject(repoId);
   // console.log(path.join("output", repoId, "dist"));
   // console.log(
   //   path.join(__dirname, "output", repoId, "venttup", "frontend", "dist")
