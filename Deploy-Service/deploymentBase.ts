@@ -95,17 +95,7 @@ export const deployer = async (repoId: string) => {
   });
   const bucketName = process.env.BUCKET_NAME || "Default Bucket Name";
   const key = "output/" + repoId;
-  await downloadS3repo(s3Client, bucketName, key).then(async (filePath) => {
-    if (filePath) {
-      await buildProject(repoId)
-        .then(() => {
-          console.log("Build Success");
-        })
-        .catch(() => {
-          console.log("Build Failed");
-        });
-    }
-  });
+  await downloadS3repo(s3Client, bucketName, key);
 };
 
 if (require.main === module) {
