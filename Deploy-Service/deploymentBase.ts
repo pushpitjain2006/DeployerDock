@@ -96,6 +96,10 @@ export const deployer = async (repoId: string) => {
   const key = "output/" + repoId;
   // await downloadS3repo(s3Client, bucketName, key);
   // await buildProject(repoId);
+  console.log(path.join("output", repoId, "dist"));
+  console.log(
+    path.join(__dirname, "output", repoId, "venttup", "frontend", "dist")
+  );
   await uploadFile(
     path.join("output", repoId, "dist"),
     path.join(__dirname, "output", repoId, "venttup", "frontend", "dist")
