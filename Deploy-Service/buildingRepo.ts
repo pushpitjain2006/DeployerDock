@@ -13,7 +13,7 @@ export async function buildProject(id: string) {
       "output",
       id,
       "venttup",
-      "backend"
+      "frontend"
     )} && npm install && npm run build`
   );
   child.stdout?.on("data", (data) => {
