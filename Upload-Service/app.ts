@@ -18,7 +18,7 @@ app.use(express.json()); // Express doesn't care what the body is, and we have t
 
 //We tested using postman and it works fine
 app.post("/deploy", async (req, res) => {
-  console.log("------------------\n");
+  console.log("Request received\n");
   const repoUrl = req.body.repoUrl; // GitHub repository URL
   if (!repoUrl) {
     res.status(400).json({ error: "repoUrl is required" });
@@ -52,7 +52,8 @@ app.post("/deploy", async (req, res) => {
     res.status(500).json({ error: "Failed to send to queue" });
     return;
   }
-  console.log("--Deployed successfully--\n");
+  console.log("Send to queue\n");
+  console.log("Server is running on port 3000");
   res.json({ repoId, queueMessageId });
 });
 
