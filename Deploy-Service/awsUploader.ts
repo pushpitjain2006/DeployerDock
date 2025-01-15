@@ -55,15 +55,16 @@ export const uploadFile = async (fileName: string, localFilePath: string) => {
     const fileContent = fs.readFileSync(filePath);
     const params = {
       Bucket: process.env.BUCKET_NAME || "",
-      Key: fileName,
+      Key: filePath.slice(localFilePath.length + 1),
       Body: fileContent,
     };
     try {
       await s3Client.send(new PutObjectCommand(params));
-      console.log(`Uploaded ${fileName}`);
+      console.log(`Uploaded ${filePath.slice(localFilePath.length + 1)}`);
     } catch (error) {
       console.error(`Error uploading ${fileName}`);
       console.error(error);
     }
   });
+  console.log("Upload Complete");
 };
