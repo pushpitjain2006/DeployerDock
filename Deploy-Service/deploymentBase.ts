@@ -6,7 +6,6 @@ import {
 import { config } from "dotenv";
 import fs from "fs";
 import path from "path";
-import { Readable } from "stream";
 
 config();
 
@@ -21,6 +20,28 @@ export const downloadS3repo = async (
       Prefix: key,
     })
   );
+
+  for (const object of objects.Contents || []) {
+    if (!object.Key) continue;
+    const file = await S3Client.send(
+      new GetObjectCommand({
+        Bucket: bucketName,
+        Key: object.Key,
+      })
+    );
+    const filePath = path.join(__dirname, ...object.Key.split("/"));
+    if (!fs.existsSync(path.dirname(filePath))) {
+      fs.mkdirSync(path.dirname(filePath), { recursive: true });
+    }
+
+    const stream = file.Body as NodeJS.ReadableStream;
+    const writeStream = fs.createWriteStream(filePath);
+    stream.pipe(writeStream);
+    await new Promise((resolve) => {
+      writeStream.on("finish", resolve);
+    });
+  }
+
   // if (objects.Contents && objects.Contents.length > 0) {
   //   console.log(objects.Contents[0] + "\n");
   // } else {
@@ -28,44 +49,44 @@ export const downloadS3repo = async (
   // }
   // objects is something like -
   //console.log(objects.Contents);
-  if (objects.Contents) {
-    for (
-      let i =
-        // 0
-        5;
-      i < 6;
-      // objects.Contents.length
-      i++
-    ) {
-      const object = objects.Contents[i];
-      // console.log(object);
-      if (!object.Key) continue;
-      // console.log(object.Key);
-      const file = await S3Client.send(
-        new GetObjectCommand({
-          Bucket: bucketName,
-          Key: object.Key,
-        })
-      );
-      const stream = file.Body as Readable;
-      console.log(stream);
-      //console.log(path.join(__dirname , "output"));
-      const filePath = path.join(__dirname, ...object.Key.split("/"));
-      console.log(object.Key.split("/"));
-      console.log(filePath);
-      if (!fs.existsSync(path.dirname(filePath))) {
-        fs.mkdirSync(path.dirname(filePath), { recursive: true });
-      }
-      const writeStream = fs.createWriteStream(filePath);
-      stream.pipe(writeStream);
-      await new Promise((resolve) => {
-        writeStream.on("finish", resolve);
-      });
-      // console.log("File downloaded successfully");
-    }
-  } else {
-    console.log("No objects in the bucket or the key is incorrect");
-  }
+  // if (objects.Contents) {
+  //   for (
+  //     let i =
+  //       // 0
+  //       5;
+  //     i < 6;
+  //     // objects.Contents.length
+  //     i++
+  //   ) {
+  //     const object = objects.Contents[i];
+  //     // console.log(object);
+  //     if (!object.Key) continue;
+  //     // console.log(object.Key);
+  //     const file = await S3Client.send(
+  //       new GetObjectCommand({
+  //         Bucket: bucketName,
+  //         Key: object.Key,
+  //       })
+  //     );
+  //     const stream = file.Body as Readable;
+  //     console.log(stream);
+  //     //console.log(path.join(__dirname , "output"));
+  //     const filePath = path.join(__dirname, ...object.Key.split("/"));
+  //     console.log(object.Key.split("/"));
+  //     console.log(filePath);
+  //     if (!fs.existsSync(path.dirname(filePath))) {
+  //       fs.mkdirSync(path.dirname(filePath), { recursive: true });
+  //     }
+  //     const writeStream = fs.createWriteStream(filePath);
+  //     stream.pipe(writeStream);
+  //     await new Promise((resolve) => {
+  //       writeStream.on("finish", resolve);
+  //     });
+  //     // console.log("File downloaded successfully");
+  //   }
+  // } else {
+  //   console.log("No objects in the bucket or the key is incorrect");
+  // }
 };
 
 export const deployer = async (repoId: string) => {
