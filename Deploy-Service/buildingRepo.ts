@@ -1,6 +1,11 @@
 import { exec } from "child_process";
 import path from "path";
 
+// Problem is that maybe the project is not in the root folder , there could be a repo like repo/frontend and repo/backend, for no as we are trying to send the npm so i am assuming it is only for bckend for now so we need to build this in the backend folder
+// solution for now is try using the base as output/id/backend/ for running the npm build in the test repo
+// for future we will have a base variable inputted by the user whiich will determine where we want to run teh commands
+// in future for security reaons we will have to containerize the commands - docker and k8 type thing
+
 export async function buildProject(id: string) {
   const child = exec(
     `cd ${path.join(__dirname, "output", id)} && npm install && npm run build`
