@@ -114,7 +114,7 @@ export const deployer = async (repoId: string) => {
 
 if (require.main === module) {
   const op = async () => {
-    await deployer("BTuTpk0nmf");
+    await deployer("8uISeWd8in");
   };
   op();
 }
