@@ -4,5 +4,5 @@
   "gitdoc.ai.useEmojis": false,
   "gitdoc.autoPull": "onCommit",
   "gitdoc.autoPush": "off",
-  "terminal.integrated.suggest.enabled": true
+  "gitdoc.autoCommitDelay": 300000
 }

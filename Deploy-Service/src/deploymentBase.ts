@@ -23,34 +23,6 @@ export const downloadS3repo = async (
       Prefix: key,
     })
   );
-
-  // for (const object of objects.Contents || []) {
-  //   if (!object.Key) continue;
-  //   const file = await S3Client.send(
-  //     new GetObjectCommand({
-  //       Bucket: bucketName,
-  //       Key: object.Key,
-  //     })
-  //   );
-  //   const filePath = path.join(__dirname, ...object.Key.split("/"));
-  //   if (!fs.existsSync(path.dirname(filePath))) {
-  //     fs.mkdirSync(path.dirname(filePath), { recursive: true });
-  //   }
-  //   const stream = file.Body as NodeJS.ReadableStream;
-  //   const writeStream = fs.createWriteStream(filePath);
-  //   stream.pipe(writeStream);
-  //   await new Promise((resolve) => {
-  //     writeStream.on("finish", resolve);
-  //   });
-  // }
-
-  // if (objects.Contents && objects.Contents.length > 0) {
-  //   console.log(objects.Contents[0] + "\n");
-  // } else {
-  //   console.log("No contents found in the bucket.");
-  // }
-  // objects is something like - { Contents: [ { Key: 'output/OclEiqAu0P' } ] }
-  // console.log(objects.Contents);
   if (objects.Contents) {
     for (let i = 0; i < objects.Contents.length; i++) {
       const object = objects.Contents[i];
@@ -96,18 +68,17 @@ export const deployer = async (repoId: string, repoBase?: string) => {
   const key = "output/" + repoId;
   await downloadS3repo(s3Client, bucketName, key);
   await buildProject(repoId, repoBase);
-  // console.log(path.join("output", repoId, "dist"));
-  // console.log(
-  //   path.join(__dirname, "output", repoId, "venttup", "frontend", "dist")
-  // );
-  const s3DistPath = path.join("output", repoId, repoBase || "", "dist");
-  const localDistPath = path.join(__dirname, s3DistPath);
+  const s3DistPath = path.join("dist", repoId);
+  const localDistPath = path.join(
+    __dirname,
+    path.join("output", repoId, repoBase || "", "dist")
+  );
   await uploadFile(s3DistPath, localDistPath);
 };
 
 if (require.main === module) {
   const op = async () => {
-    await deployer("8uISeWd8in");
+    await deployer("a2GAq6IR70","venttup/Frontend");
   };
   op();
 }

@@ -54,7 +54,6 @@ export const uploadFile = async (fileName: string, localFilePath: string) => {
   //filePath = Users/username/vercel-clone/output/12ae3../index.html i.e. (__dirname + "/" + fileName)
   // console.log(localFilePath);
   getAllFiles(localFilePath).forEach(async (filePath) => {
-
     let fileContent;
     try {
       fileContent = fs.readFileSync(filePath);
@@ -66,12 +65,11 @@ export const uploadFile = async (fileName: string, localFilePath: string) => {
 
     const params = {
       Bucket: process.env.BUCKET_NAME || "",
-      Key: filePath.slice(__dirname.length + 1),
+      Key: path.join(fileName, filePath.slice(localFilePath.length + 1)),
       Body: fileContent,
     };
     try {
       await s3Client.send(new PutObjectCommand(params));
-      // console.log(`Uploaded ${filePath.slice(__dirname.length + 1)}`);
     } catch (error) {
       console.error(`Error uploading ${fileName}`);
       console.error(error);
