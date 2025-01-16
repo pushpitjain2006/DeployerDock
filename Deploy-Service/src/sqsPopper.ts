@@ -33,7 +33,7 @@ export const sqsPopper = async (): Promise<string | undefined> => {
     }
     return undefined;
   } catch (err) {
-    console.log("Error :\n", err);
+    console.error("Error :\n", err);
     return undefined;
   }
 };
