@@ -102,7 +102,13 @@ export const deployer = async (repoId: string) => {
   // );
   await uploadFile(
     path.join("output", repoId, "dist"),
-    path.join(__dirname, "output", repoId, "venttup", "Frontend", "dist")
+    path.join(
+      __dirname,
+      "output",
+      repoId,
+      // Root to the base of the frontend page variable is to be added here
+      "dist"
+    )
   );
 };
 

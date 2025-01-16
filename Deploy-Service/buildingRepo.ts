@@ -11,9 +11,8 @@ export async function buildProject(id: string) {
     `cd ${path.join(
       __dirname,
       "output",
-      id,
-      "venttup",
-      "Frontend"
+      id
+      // Root to the base of the frontend page variable is to be added here
     )} && npm install && npm run build`
   );
   child.stdout?.on("data", (data) => {
