@@ -37,7 +37,7 @@ app.post("/deploy", async (req, res) => {
     const localFilePath = filesLocalPathArray[i];
     const fileName = localFilePath.slice(__dirname.length + 1);
     try {
-      await uploadFile(fileName, localFilePath);
+      // await uploadFile(fileName, localFilePath);
     } catch (error) {
       console.log(error);
       res.status(500).json({ error: "Failed to upload file" });
@@ -55,7 +55,7 @@ app.post("/deploy", async (req, res) => {
   }
   console.log("Send to queue\n");
   console.log("Server is running on port 3000");
-  res.json({ repoId, queueMessageId, repoBase });
+  res.json({ repoId, queueMessageId });
 });
 
 app.listen(3000, () => {

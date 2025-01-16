@@ -7,9 +7,11 @@ dotenv.config();
 const hero1 = async () => {
   while (true) {
     const x = await sqsPopper();
-    // console.log(x);
+    console.log(
+      typeof x,
+    );
     if (x) {
-      console.log(x);
+      // console.log(x);
       // await deployer(x);
     } else {
       console.log("Empty, waiting for  5 seconds\n");
