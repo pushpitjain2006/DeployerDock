@@ -9,6 +9,7 @@ const hero1 = async () => {
     const x = await sqsPopper();
     if (x) {
       const data = JSON.parse(x);
+      console.log(data);
       await deployer(data["repoId"], data["repoBase"]);
     } else {
       console.log("Empty, waiting for  5 seconds\n");
