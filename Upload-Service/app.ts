@@ -20,6 +20,7 @@ app.use(express.json()); // Express doesn't care what the body is, and we have t
 app.post("/deploy", async (req, res) => {
   console.log("Request received\n");
   const repoUrl = req.body.repoUrl; // GitHub repository URL
+  const repoBase = req.body.repoBase; // The base folder of the repository
   if (!repoUrl) {
     res.status(400).json({ error: "repoUrl is required" });
     return;
@@ -46,7 +47,7 @@ app.post("/deploy", async (req, res) => {
   let queueMessageId;
   try {
     // console.log("Sending to queue\n");
-    queueMessageId = await sendToQueue(repoId);
+    queueMessageId = await sendToQueue(repoId, repoBase);
   } catch (error) {
     console.log(error);
     res.status(500).json({ error: "Failed to send to queue" });
@@ -54,7 +55,7 @@ app.post("/deploy", async (req, res) => {
   }
   console.log("Send to queue\n");
   console.log("Server is running on port 3000");
-  res.json({ repoId, queueMessageId });
+  res.json({ repoId, queueMessageId, repoBase });
 });
 
 app.listen(3000, () => {
