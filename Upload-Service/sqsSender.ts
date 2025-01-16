@@ -11,11 +11,11 @@ const sqsClient = new SQS({
   },
 });
 
-export const sendToQueue = async (message: string) => {
+export const sendToQueue = async (repoId: string, repoBase: string) => {
   try {
     const data = await sqsClient.sendMessage({
       QueueUrl: process.env.AWS_QUEUE_URL || "Default Queue URL",
-      MessageBody: message,
+      MessageBody: JSON.stringify({ repoId, repoBase }),
     });
     // console.log("Success", data.MessageId);
     return data.MessageId;

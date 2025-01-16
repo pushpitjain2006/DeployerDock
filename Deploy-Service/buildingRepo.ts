@@ -6,13 +6,13 @@ import path from "path";
 // for future we will have a base variable inputted by the user which will determine where we want to run teh commands
 // in future for security reasons we will have to containerize the commands - docker and k8 type thing
 
-export async function buildProject(id: string) {
+export async function buildProject(id: string, repoBase?: string) {
   const child = exec(
     `cd ${path.join(
       __dirname,
       "output",
-      id
-      // Root to the base of the frontend page variable is to be added here
+      id,
+      repoBase || ""
     )} && npm install && npm run build`
   );
   child.stdout?.on("data", (data) => {
@@ -24,15 +24,7 @@ export async function buildProject(id: string) {
   return new Promise((resolve, reject) => {
     child.on("exit", (code) => {
       if (code === 0) {
-        // const uploaderFunc = async () => {
-        // await uploadFile(
-        //   path.join("output", "id", "dist"),
-        //   path.join(__dirname, "output", id, "venttup", "frontend", "dist")
-        // ).then(() => {
         resolve("");
-        // });
-        // };
-        // uploaderFunc();
       } else {
         reject(new Error(`Build failed with exit code ${code}`));
       }
