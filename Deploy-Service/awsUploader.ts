@@ -54,7 +54,16 @@ export const uploadFile = async (fileName: string, localFilePath: string) => {
   //filePath = Users/username/vercel-clone/output/12ae3../index.html i.e. (__dirname + "/" + fileName)
   // console.log(localFilePath);
   getAllFiles(localFilePath).forEach(async (filePath) => {
-    const fileContent = fs.readFileSync(filePath);
+
+    let fileContent;
+    try {
+      fileContent = fs.readFileSync(filePath);
+    } catch (error) {
+      console.error(`Error reading file ${filePath}`);
+      console.error(error);
+      return;
+    }
+
     const params = {
       Bucket: process.env.BUCKET_NAME || "",
       Key: filePath.slice(__dirname.length + 1),
