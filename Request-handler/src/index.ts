@@ -25,14 +25,19 @@ const streamToString = (stream: any): Promise<string> =>
 app.get("/*", async (req, res) => {
   const host = req.hostname;
   const id = host.split(".")[0];
-  const filePath = req.path;
+  const UndecodedFilePath = req.path;
+  let filePath = decodeURIComponent(UndecodedFilePath);
+  if (filePath === "/") {
+    filePath = "/index.html";
+  }
+
   console.log("Request received for: " + filePath);
   const bucketName = process.env.BUCKET_NAME || "bucketName";
   try {
     const file = await s3Client.send(
       new GetObjectCommand({
         Bucket: bucketName,
-        Key: path.join("dist", "kPClF3KF6j", filePath),
+        Key: path.join("dist", id, filePath),
       })
     );
     const type = filePath.endsWith("html")
