@@ -15,7 +15,7 @@ app.get("/*", (req, res) => {
   const host = req.hostname;
   const id = host.split(".")[0];
   const filePath = req.path;
-
+  
 });
 
 const PORT = process.env.PORT || 3001;
