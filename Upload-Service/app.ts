@@ -38,7 +38,7 @@ app.post("/deploy", async (req: Request, res: Response): Promise<void> => {
       path.join(__dirname, `output/${repoId}`)
     );
     //We can use the AWS SDK to upload files to S3
-    console.log("Uploading files to S3 for repoId: ${repoId}\n");
+    console.log(`Uploading files to S3 for repoId: ${repoId}\n`);
     for (const localFilePath of filesLocalPathArray) {
       const fileName = localFilePath.slice(__dirname.length + 1);
       try {

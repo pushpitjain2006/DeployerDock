@@ -1,5 +1,5 @@
 const MAX_ID_LENGTH = 10;
-const CHARACTER_SET = "0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ";
+const CHARACTER_SET = "0123456789abcdefghijklmnopqrstuvwxyz";
 
 /**
  * Generates a random ID of a fixed length.
