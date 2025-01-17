@@ -21,7 +21,7 @@ app.get("/*", async (req, res) => {
   const file = await S3client.send(
     new GetObjectCommand({
       Bucket: bucketName,
-      Key: `dist/${id}${filePath}`,
+      Key: `/dist/${id}${filePath}`,
     })
   );
   const Type = filePath.endsWith("html")
