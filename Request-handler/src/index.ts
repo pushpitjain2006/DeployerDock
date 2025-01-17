@@ -1,7 +1,13 @@
-import express from "express";
+import express, { Request, Response } from "express";
 import dotenv from "dotenv";
-import { GetObjectCommand, S3Client } from "@aws-sdk/client-s3";
+import {
+  GetObjectCommand,
+  S3Client,
+  GetObjectCommandOutput,
+} from "@aws-sdk/client-s3";
 import path from "path";
+import mime from "mime-types";
+import { Readable } from "stream";
 
 dotenv.config();
 const app = express();
@@ -15,18 +21,20 @@ const s3Client = new S3Client({
   },
 });
 
-const streamToString = (stream: any): Promise<string> =>
+// Utility function to convert a Readable stream to a Buffer
+const streamToBuffer = (stream: Readable): Promise<Buffer> =>
   new Promise((resolve, reject) => {
-    const chunks: any[] = [];
-    stream.on("data", (chunk: any) => chunks.push(chunk));
+    const chunks: Buffer[] = [];
+    stream.on("data", (chunk) => chunks.push(chunk));
     stream.on("error", reject);
-    stream.on("end", () => resolve(Buffer.concat(chunks).toString("utf8")));
+    stream.on("end", () => resolve(Buffer.concat(chunks)));
   });
-app.get("/*", async (req, res) => {
+
+app.get("/*", async (req: Request, res: Response) => {
   const host = req.hostname;
   const id = host.split(".")[0];
-  const UndecodedFilePath = req.path;
-  let filePath = decodeURIComponent(UndecodedFilePath);
+  const undecodedFilePath = req.path;
+  let filePath = decodeURIComponent(undecodedFilePath);
   if (filePath === "/") {
     filePath = "/index.html";
   }
@@ -34,22 +42,34 @@ app.get("/*", async (req, res) => {
   console.log("Request received for: " + filePath);
   const bucketName = process.env.BUCKET_NAME || "bucketName";
   try {
-    const file = await s3Client.send(
+    const file: GetObjectCommandOutput = await s3Client.send(
       new GetObjectCommand({
         Bucket: bucketName,
         Key: path.join("dist", id, filePath),
       })
     );
-    const type = filePath.endsWith("html")
-      ? "text/html"
-      : filePath.endsWith("css")
-      ? "text/css"
-      : "application/javascript";
+
+    const type = mime.lookup(filePath) || "application/octet-stream";
     res.set("Content-Type", type);
-    const fileBody = await streamToString(file.Body);
-    res.send(fileBody);
+
+    if (file.Body instanceof Readable) {
+      // Stream the file directly to the response
+      file.Body.pipe(res);
+    } else if (file.Body) {
+      if (file.Body instanceof Readable) {
+        // Fallback for non-stream Body types
+        const fileBuffer = await streamToBuffer(file.Body);
+        res.send(fileBuffer);
+      } else {
+        console.error("Unsupported file body type for: ", filePath);
+        res.status(500).send("Internal Server Error");
+      }
+    } else {
+      console.error("File body is empty for: ", filePath);
+      res.status(404).send("File not found");
+    }
   } catch (error) {
-    console.error("Error fetching file from S3:", error);
+    console.error("Error fetching file from S3:", filePath, error);
     res.status(500).send("Internal Server Error");
   }
 });
