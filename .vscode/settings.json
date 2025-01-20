@@ -1,8 +1,0 @@
-{
-  "gitdoc.enabled": true,
-  "gitdoc.ai.enabled": true,
-  "gitdoc.ai.useEmojis": false,
-  "gitdoc.autoPull": "onCommit",
-  "gitdoc.autoPush": "off",
-  "gitdoc.autoCommitDelay": 300000
-}
