@@ -10,6 +10,7 @@ import path from "path";
 import { buildProject } from "./buildingRepo";
 import { uploadFile } from "./awsUploader";
 import simpleGit from "simple-git";
+import { localSpaceReleaser } from "./spaceReleaser";
 
 config();
 /*
@@ -80,6 +81,8 @@ export const deployer = async (
     path.join("output", repoId, repoBase || "", "dist")
   );
   await uploadFile(s3DistPath, localDistPath);
+  localSpaceReleaser(path.join(__dirname, "output"));
+
 };
 
 if (require.main === module) {
