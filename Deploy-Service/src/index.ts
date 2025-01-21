@@ -10,7 +10,7 @@ const hero1 = async () => {
     if (x) {
       const data = JSON.parse(x);
       console.log(data);
-      await deployer(data["repoId"], data["repoBase"]);
+      await deployer(data["repoId"], data["repoUrl"], data["repoBase"]);
     } else {
       console.log("Empty, waiting for  5 seconds\n");
       await new Promise((resolve) => setTimeout(resolve, 5 * 1000));

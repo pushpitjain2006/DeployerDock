@@ -24,6 +24,7 @@ const sqsClient = new SQS({
 
 export const sendToQueue = async (
   repoId: string,
+  repoUrl: string,
   repoBase?: string
 ): Promise<string | undefined> => {
   const queueUrl = process.env.AWS_QUEUE_URL;
@@ -36,7 +37,7 @@ export const sendToQueue = async (
   try {
     const command = new SendMessageCommand({
       QueueUrl: queueUrl,
-      MessageBody: JSON.stringify({ repoId, repoBase }),
+      MessageBody: JSON.stringify({ repoId, repoUrl, repoBase }),
     });
     const response: SendMessageCommandOutput = await sqsClient.send(command);
     // console.log("Success", data.MessageId);

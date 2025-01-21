@@ -5,7 +5,9 @@ function App() {
   const [repoUrl, setUrl] = useState("");
   const [loading, setLoading] = useState(false);
   const [deployId, setDeployId] = useState("");
-  const deployHandler = async () => {
+  const [repoBase, setBase] = useState("");
+  const deployHandler = async (e: React.FormEvent<HTMLFormElement>) => {
+    e.preventDefault();
     if (!repoUrl) {
       alert("Please enter a URL");
       return;
@@ -13,16 +15,16 @@ function App() {
     setLoading(true);
     try {
       console.log(repoUrl);
-      // const response = await fetch("http://localhost:3000/deploy", {
-      //   method: "POST",
-      //   headers: {
-      //     "Content-Type": "application/json",
-      //   },
-      //   body: JSON.stringify({ repoUrl }),
-      // });
-      // const data = await response.json();
-      // setDeployId(data.repoId);
-      // console.log(response);
+      const response = await fetch("http://localhost:3000/deploy", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({ repoUrl, repoBase }),
+      });
+      const data = await response.json();
+      setDeployId(data.repoId);
+      console.log(response);
     } catch (error) {
       console.error(error);
     }
@@ -31,7 +33,7 @@ function App() {
   return (
     <>
       <h1>Deploymenter</h1>
-      <form onSubmit={deployHandler}>
+      <form onSubmit={deployHandler} className="form" action="">
         <label>
           <input
             type="text"
@@ -39,17 +41,24 @@ function App() {
             value={repoUrl}
             onChange={(e) => setUrl(e.target.value)}
           />
+          <input
+            type="text"
+            placeholder="Enter a base folder"
+            value={repoBase}
+            onChange={(e) => setBase(e.target.value)}
+          ></input>
         </label>
         <button type="submit" disabled={loading}>
           Deploy
         </button>
       </form>
+      {repoUrl && <p>Deploying: {repoUrl}</p>}
       {loading && <p>Deploying...</p>}
       {deployId && <p>Deployed with ID: {deployId}</p>}
       {deployId && (
         <p>
           <a
-            href={`http://${deployId}.localhost:3000`}
+            href={`http://${deployId}.localhost:3001`}
             target="_blank"
             rel="noreferrer"
           >

@@ -69,7 +69,7 @@ app.get("/*", async (req: Request, res: Response) => {
       res.status(404).send("File not found");
     }
   } catch (error) {
-    console.error("Error fetching file from S3:", filePath, error);
+    console.error("Error fetching file from S3:", filePath);
     res.status(500).send("Internal Server Error");
   }
 });

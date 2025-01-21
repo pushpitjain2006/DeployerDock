@@ -1,17 +1,18 @@
-import {
-  GetObjectCommand,
-  ListObjectsV2Command,
-  S3Client,
-} from "@aws-sdk/client-s3";
+// import {
+//   GetObjectCommand,
+//   ListObjectsV2Command,
+//   S3Client,
+// } from "@aws-sdk/client-s3";
 import { config } from "dotenv";
-import fs from "fs";
+// import fs from "fs";
 import path from "path";
-import { Readable } from "stream";
+// import { Readable } from "stream";
 import { buildProject } from "./buildingRepo";
 import { uploadFile } from "./awsUploader";
+import simpleGit from "simple-git";
 
 config();
-
+/*
 export const downloadS3repo = async (
   S3Client: S3Client, // The S3Client from @aws-sdk (v3)
   bucketName: string, // The S3 Bucket Name
@@ -55,18 +56,23 @@ export const downloadS3repo = async (
     console.log("No objects in the bucket or the key is incorrect");
   }
 };
-
-export const deployer = async (repoId: string, repoBase?: string) => {
-  const s3Client = new S3Client({
-    region: process.env.AWS_REGION || "ap-south-1",
-    credentials: {
-      accessKeyId: process.env.AWS_ACCESS_KEY_ID || "accessKeyId",
-      secretAccessKey: process.env.AWS_SECRET_ACCESS_KEY || "secretAccessKey",
-    },
-  });
-  const bucketName = process.env.BUCKET_NAME || "Default Bucket Name";
-  const key = "output/" + repoId;
-  await downloadS3repo(s3Client, bucketName, key);
+*/
+export const deployer = async (
+  repoId: string,
+  repoUrl: string,
+  repoBase?: string
+) => {
+  // const s3Client = new S3Client({
+  //   region: process.env.AWS_REGION || "ap-south-1",
+  //   credentials: {
+  //     accessKeyId: process.env.AWS_ACCESS_KEY_ID || "accessKeyId",
+  //     secretAccessKey: process.env.AWS_SECRET_ACCESS_KEY || "secretAccessKey",
+  //   },
+  // });
+  // const bucketName = process.env.BUCKET_NAME || "Default Bucket Name";
+  // const key = "output/" + repoId;
+  // await downloadS3repo(s3Client, bucketName, key);
+  await simpleGit().clone(repoUrl, path.join(__dirname, `output/${repoId}`));
   await buildProject(repoId, repoBase);
   const s3DistPath = path.join("dist", repoId);
   const localDistPath = path.join(
@@ -78,7 +84,7 @@ export const deployer = async (repoId: string, repoBase?: string) => {
 
 if (require.main === module) {
   const op = async () => {
-    await deployer("a2GAq6IR70","venttup/Frontend");
+    await deployer("a2GAq6IR70", "venttup/Frontend");
   };
   op();
 }
