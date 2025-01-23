@@ -12,7 +12,7 @@ This project automates the deployment process for websites hosted on Git. It tak
 1. Clone this repository:
 
    ```bash
-   git clone https://github.com/pushpitjain2006/Git-Website-Builer-Deployer-project.git
+   git clone https://github.com/pushpitjain2006/Git-Website-Builder-Deployer-project.git
    ```
 
 2. Navigate to the project directory:
