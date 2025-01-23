@@ -45,7 +45,7 @@ Before starting each service add your credentials in the .env file as per the re
 2. **Start the Upload Service:**
 
    ```bash
-   cd ../upload-service
+   cd upload-service
    cp .env.example .env
    ```
    Complete the fields in .env file
@@ -60,7 +60,7 @@ Before starting each service add your credentials in the .env file as per the re
 3. **Start the Request Handler:**
 
    ```bash
-   cd ../request-handler
+   cd request-handler
    cp .env.example .env
    ```
    Complete the fields in .env file
@@ -75,7 +75,7 @@ Before starting each service add your credentials in the .env file as per the re
 4. **Start the Frontend:** (Optional, if you have a user interface)
 
    ```bash
-   cd ../frontend
+   cd frontend
    cp .env.example .env
    ```
    Complete the fields in .env file
