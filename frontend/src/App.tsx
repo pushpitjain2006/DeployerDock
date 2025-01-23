@@ -43,9 +43,7 @@ function App() {
             🚀
           </span>
         </h1>
-        <p className="subtitle">
-          Effortless Deployments with a Click
-        </p>
+        <p className="subtitle">Effortless Deployments with a Click</p>
       </header>
       <main className="main">
         <form onSubmit={deployHandler} className="form">
@@ -67,12 +65,12 @@ function App() {
               className="input"
             />
           </div>
-          <button type="submit" className={`button ${loading ? "loading" : ""}`} disabled={loading}>
-            {loading ? (
-              <span className="loader"></span>
-            ) : (
-              "Deploy Now"
-            )}
+          <button
+            type="submit"
+            className={`button ${loading ? "loading" : ""}`}
+            disabled={loading}
+          >
+            {loading ? <span className="loader"></span> : "Deploy Now"}
           </button>
         </form>
         <section className="output">
@@ -84,7 +82,9 @@ function App() {
               <p className="info">Deployment ID: {deployId}</p>
               <p>
                 <a
-                  href={`http://${deployId}.localhost:3001`}
+                  href={`https://${deployId}.${
+                    import.meta.env.VITE_APP_Hostname || "localhost:3001"
+                  }`}
                   target="_blank"
                   rel="noreferrer"
                   className="link"
