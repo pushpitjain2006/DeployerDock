@@ -1,13 +1,13 @@
-**Project: Git Website Builder and Deployer**
+# Project: Git Website Builder and Deployer
 
 This project automates the deployment process for websites hosted on Git. It takes a Git repository URL as input, deploys the website, and provides the deployed website's ID and URL in the format `https://id.localhost:3001`.
 
-**Prerequisites**
+## Prerequisites
 
 - Node.js and npm (or yarn) installed on your system.
 - AWS account with SQS and S3 services enabled.
 
-**Installation**
+## Installation
 
 1. Clone this repository:
 
@@ -21,7 +21,7 @@ This project automates the deployment process for websites hosted on Git. It tak
    cd Git-Website-Builder-Deployer-project
    ```
 
-**Running the Project**
+## Running the Project
 
 The project consists of four separate services: deploy-service, upload-service, request-handler, and frontend. You need to start them in a specific order for the deployment process to function correctly.
 
@@ -75,11 +75,11 @@ Before starting each service add your credentials in the .env file as per the re
    This service provides a user interface for interacting with the deployment process (if implemented).
    (You can alternatively build the frontend and serve it using a static file server.)
 
-**Usage**
+## Usage
 
 Once all services are running, navigate to the frontend at `http://localhost:5173/`. Here, you can deploy a website by providing its Git repository URL and the base path for the frontend in your repository. Currently, the project supports only frontend projects that use ```npm run build``` for building (e.g., React, Angular, Vue, etc.).
 
-**Deployment Output**
+## Deployment Output
 
 Upon successful deployment, the project will return the following information:
 
