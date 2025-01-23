@@ -84,10 +84,3 @@ export const deployer = async (
   localSpaceReleaser(path.join(__dirname, "output"));
 
 };
-
-if (require.main === module) {
-  const op = async () => {
-    await deployer("a2GAq6IR70", "venttup/Frontend");
-  };
-  op();
-}

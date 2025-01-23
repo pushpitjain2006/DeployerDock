@@ -1,6 +1,7 @@
 {
   "name": "deploy-service",
   "version": "1.0.0",
+  "type": "module",
   "main": "index.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
@@ -20,6 +21,7 @@
     "simple-git": "^3.27.0"
   },
   "devDependencies": {
+    "esbuild": "^0.24.2",
     "@types/cors": "^2.8.17",
     "@types/express": "^5.0.0",
     "nodemon": "^3.1.9",

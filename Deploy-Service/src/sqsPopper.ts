@@ -37,10 +37,3 @@ export const sqsPopper = async (): Promise<string | undefined> => {
     return undefined;
   }
 };
-
-if (require.main === module) {
-  const op = async () => {
-    console.log(await sqsPopper());
-  };
-  op();
-}

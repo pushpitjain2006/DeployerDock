@@ -31,13 +31,3 @@ export async function buildProject(id: string, repoBase?: string) {
     });
   });
 }
-
-if (require.main === module) {
-  buildProject("OclEiqAu0P")
-    .then(() => {
-      console.log("Build Success");
-    })
-    .catch((error) => {
-      console.error("Build Failed:", error.message);
-    });
-}

@@ -9,7 +9,10 @@ const hero1 = async () => {
     const x = await sqsPopper();
     if (x) {
       const data = JSON.parse(x);
-      console.log(data);
+      if (!data["repoId"] || !data["repoUrl"] || !data["repoBase"]) {
+        console.log("Invalid data");
+        continue;
+      }
       await deployer(data["repoId"], data["repoUrl"], data["repoBase"]);
     } else {
       console.log("Empty, waiting for  5 seconds\n");
