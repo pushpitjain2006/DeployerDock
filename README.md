@@ -32,6 +32,9 @@ Before starting each service add your credentials in the .env file as per the re
    ```bash
    cd deploy-service
    cp .env.example .env
+   ```
+   Complete the fields in .env file
+   ```bash
    npm install
    npm run build
    node dist/index.cjs
@@ -44,6 +47,9 @@ Before starting each service add your credentials in the .env file as per the re
    ```bash
    cd ../upload-service
    cp .env.example .env
+   ```
+   Complete the fields in .env file
+   ```bash
    npm install
    npm run build
    node dist/app.cjs
@@ -56,6 +62,9 @@ Before starting each service add your credentials in the .env file as per the re
    ```bash
    cd ../request-handler
    cp .env.example .env
+   ```
+   Complete the fields in .env file
+   ```bash
    npm install
    npm run build
    node dist/index.cjs
@@ -68,6 +77,9 @@ Before starting each service add your credentials in the .env file as per the re
    ```bash
    cd ../frontend
    cp .env.example .env
+   ```
+   Complete the fields in .env file
+   ```bash
    npm install
    npm run dev
    ```
