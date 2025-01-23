@@ -21,23 +21,12 @@ const s3Client = new S3Client({
   },
 });
 
-// Utility function to convert a Readable stream to a Buffer
-const streamToBuffer = (stream: Readable): Promise<Buffer> =>
-  new Promise((resolve, reject) => {
-    const chunks: Buffer[] = [];
-    stream.on("data", (chunk) => chunks.push(chunk));
-    stream.on("error", reject);
-    stream.on("end", () => resolve(Buffer.concat(chunks)));
-  });
-
 app.get("/*", async (req: Request, res: Response) => {
   const host = req.hostname;
-  const id = host.split(".")[0];
+  const id = host.includes(".") ? host.split(".")[0] : "default";
   const undecodedFilePath = req.path;
   let filePath = decodeURIComponent(undecodedFilePath);
-  if (filePath === "/") {
-    filePath = "/index.html";
-  }
+  if (filePath === "/") filePath = "/index.html";
 
   console.log("Request received for: " + filePath);
   const bucketName = process.env.BUCKET_NAME || "bucketName";
@@ -53,23 +42,13 @@ app.get("/*", async (req: Request, res: Response) => {
     res.set("Content-Type", type);
 
     if (file.Body instanceof Readable) {
-      // Stream the file directly to the response
       file.Body.pipe(res);
-    } else if (file.Body) {
-      if (file.Body instanceof Readable) {
-        // Fallback for non-stream Body types
-        const fileBuffer = await streamToBuffer(file.Body);
-        res.send(fileBuffer);
-      } else {
-        console.error("Unsupported file body type for: ", filePath);
-        res.status(500).send("Internal Server Error");
-      }
     } else {
       console.error("File body is empty for: ", filePath);
       res.status(404).send("File not found");
     }
   } catch (error) {
-    console.error("Error fetching file from S3:", filePath);
+    console.error("Error fetching file from S3: ", filePath);
     res.status(500).send("Internal Server Error");
   }
 });

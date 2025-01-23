@@ -1,32 +1,41 @@
 import { exec } from "child_process";
 import path from "path";
 
-// Problem is that maybe the project is not in the root folder , there could be a repo like repo/frontend and repo/backend, for no as we are trying to send the npm so i am assuming it is only for backend for now so we need to build this in the backend folder
-// solution for now is try using the base as output/id/backend/ for running the npm build in the test repo
-// for future we will have a base variable inputted by the user which will determine where we want to run teh commands
-// in future for security reasons we will have to containerize the commands - docker and k8 type thing
+/**
+ * Builds a project by running `npm install` and `npm run build` in the specified repository base.
+ * @param id - The unique identifier for the repository.
+ * @param repoBase - (Optional) The base directory within the repository where the build commands should run.
+ * @returns A Promise that resolves if the build succeeds and rejects if it fails.
+ */
 
-export async function buildProject(id: string, repoBase?: string) {
-  const child = exec(
-    `cd ${path.join(
-      __dirname,
-      "output",
-      id,
-      repoBase || ""
-    )} && npm install && npm run build`
-  );
+export async function buildProject(
+  id: string,
+  repoBase?: string
+): Promise<void> {
+  const buildPath = path.join(__dirname, "output", id, repoBase || "");
+
+  console.log(`Starting build process in: ${buildPath}`);
+
+  // Execute the build commands
+  const child = exec(`cd ${buildPath} && npm install && npm run build`); // 5 minutes
+
+  // Stream the stdout and stderr for better monitoring
   child.stdout?.on("data", (data) => {
-    console.log("stdout :", data);
+    console.log(`[Build Output]: ${data}`);
   });
   child.stderr?.on("data", (data) => {
-    console.error("stderr :", data);
+    console.error(`[Build Error]: ${data}`);
   });
+
+  // Wrap the build process in a promise
   return new Promise((resolve, reject) => {
     child.on("exit", (code) => {
       if (code === 0) {
-        resolve("");
+        console.log("Build completed successfully.");
+        resolve();
       } else {
-        reject(new Error(`Build failed with exit code ${code}`));
+        console.error(`Build failed with exit code ${code}.`);
+        reject(new Error(`Build failed with exit code ${code}.`));
       }
     });
   });
