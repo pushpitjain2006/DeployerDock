@@ -18,6 +18,10 @@ app.use(cors());
 app.use(express.json()); // Express doesn't care what the body is, and we have to use the respective middleware by ourselves to parse the body
 //We can use spawn but we will use simple git for cleaner code and simplicity
 
+app.get("/", (req: Request, res: Response): void => {
+  res.send("Hello World!");
+});
+
 //We tested using postman and it works fine
 app.post("/deploy", async (req: Request, res: Response): Promise<void> => {
   try {
