@@ -72,6 +72,10 @@ app.post("/deploy", async (req: Request, res: Response): Promise<void> => {
   }
 });
 
+app.get("/health", (req: Request, res: Response): void => {
+  res.json({ status: "UP" });
+});
+
 app.listen(PORT, () => {
   console.log("Server is running on port " + PORT);
 });
