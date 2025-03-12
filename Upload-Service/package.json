@@ -12,11 +12,11 @@
   "license": "ISC",
   "description": "",
   "dependencies": {
-    "@aws-sdk/client-s3": "^3.726.1",
-    "@aws-sdk/client-sqs": "^3.726.1",
+    "@aws-sdk/client-s3": "^3.758.0",
+    "@aws-sdk/client-sqs": "^3.758.0",
     "dotenv": "^16.4.7",
     "express": "^4.21.2",
-    "node": "^23.5.0",
+    "node": "^23.9.0",
     "node-fetch": "^3.3.2",
     "simple-git": "^3.27.0",
     "cors": "^2.8.5"
@@ -25,7 +25,7 @@
     "@types/cors": "^2.8.17",
     "@types/express": "^5.0.0",
     "nodemon": "^3.1.9",
-    "typescript": "^5.7.2",
-    "esbuild": "0.24.2"
+    "typescript": "^5.8.2",
+    "esbuild": "0.25.0"
   }
 }
