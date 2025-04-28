@@ -2,7 +2,7 @@ import { exec } from "child_process";
 import path from "path";
 
 /**
- * Builds a project by running `npm install` and `npm run build` in the specified repository base.
+ * @description Builds a project by running `npm install` and `npm run build` in the specified repository base.
  * @param id - The unique identifier for the repository.
  * @param repoBase - (Optional) The base directory within the repository where the build commands should run.
  * @returns A Promise that resolves if the build succeeds and rejects if it fails.
@@ -16,10 +16,8 @@ export async function buildProject(
 
   console.log(`Starting build process in: ${buildPath}`);
 
-  // Execute the build commands
-  const child = exec(`cd ${buildPath} && npm install && npm run build`); // 5 minutes
+  const child = exec(`cd ${buildPath} && npm install && npm run build`);
 
-  // Stream the stdout and stderr for better monitoring
   child.stdout?.on("data", (data) => {
     console.log(`[Build Output]: ${data}`);
   });
@@ -27,7 +25,6 @@ export async function buildProject(
     console.error(`[Build Error]: ${data}`);
   });
 
-  // Wrap the build process in a promise
   return new Promise((resolve, reject) => {
     child.on("exit", (code) => {
       if (code === 0) {

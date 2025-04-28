@@ -6,7 +6,7 @@ import path from "path";
 config();
 
 /**
- * Recursively retrieves all file paths within a given directory.
+ * @description Recursively retrieves all file paths within a given directory.
  * @param directoryBasePath - The base directory to scan.
  * @returns An array of absolute file paths.
  */
@@ -27,7 +27,6 @@ const getAllFiles = (directoryBasePath: string): string[] => {
   return files;
 };
 
-// Configure S3 Client
 const s3Client = new S3Client({
   region: process.env.AWS_REGION || "ap-south-1",
   credentials: {
@@ -43,14 +42,14 @@ const s3Client = new S3Client({
  */
 const showProgressBar = (completed: number, total: number) => {
   const percentage = Math.floor((completed / total) * 100);
-  const progressBarWidth = 20; // Width of the progress bar
+  const progressBarWidth = 20;
   const completedBars = Math.floor((percentage / 100) * progressBarWidth);
   const bar = `[${"=".repeat(completedBars)}${" ".repeat(
     progressBarWidth - completedBars
   )}] ${percentage}%`;
-  process.stdout.clearLine(0); // Clear the current line
-  process.stdout.cursorTo(0); // Move to the start of the line
-  process.stdout.write(bar); // Write the progress bar
+  process.stdout.clearLine(0);
+  process.stdout.cursorTo(0);
+  process.stdout.write(bar);
 };
 
 /**
@@ -68,15 +67,14 @@ export const uploadFile = async (fileName: string, localFilePath: string) => {
 
   console.log(`Uploading ${allFiles.length} files from ${localFilePath}...`);
 
-  let completedCount = 0; // To track completed uploads
+  let completedCount = 0;
 
-  // Map each file to an upload promise
   const uploadPromises = allFiles.map(async (filePath) => {
-    const relativePath = filePath.slice(localFilePath.length + 1); // Get the relative file path
+    const relativePath = filePath.slice(localFilePath.length + 1);
     const s3Key = path.join(fileName, relativePath);
 
     try {
-      const fileContent = fs.readFileSync(filePath); // Read the file content
+      const fileContent = fs.readFileSync(filePath);
 
       const params = {
         Bucket: process.env.BUCKET_NAME || "",
@@ -84,18 +82,16 @@ export const uploadFile = async (fileName: string, localFilePath: string) => {
         Body: fileContent,
       };
 
-      // Upload the file to S3
       await s3Client.send(new PutObjectCommand(params));
     } catch (error) {
       console.error(`Error uploading file: ${filePath}`);
       console.error(error);
     } finally {
       completedCount++;
-      showProgressBar(completedCount, allFiles.length); // Update the progress bar
+      showProgressBar(completedCount, allFiles.length);
     }
   });
 
-  // Wait for all uploads to complete
   await Promise.all(uploadPromises);
 
   console.log("\nAll files uploaded successfully.");

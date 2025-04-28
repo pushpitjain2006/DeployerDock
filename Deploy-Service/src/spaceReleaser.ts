@@ -4,6 +4,8 @@ import * as path from "path";
 /**
  * Recursively deletes files and folders in the specified directory.
  * @param folderPath - The folder to delete.
+ * @throws Will throw an error if the folder does not exist or if there is an issue deleting files.
+ * @description This function will delete all files and subdirectories in the specified folder.
  */
 export const localSpaceReleaser = (folderPath: string) => {
   try {
@@ -14,15 +16,11 @@ export const localSpaceReleaser = (folderPath: string) => {
         const currentPath = path.join(folderPath, file);
 
         if (fs.lstatSync(currentPath).isDirectory()) {
-          // Recursively delete subdirectories
           localSpaceReleaser(currentPath);
         } else {
-          // Delete files
           fs.unlinkSync(currentPath);
         }
       }
-
-      // Delete the now-empty folder
       fs.rmdirSync(folderPath);
     } else {
       console.error(`Folder not found: ${folderPath}`);
