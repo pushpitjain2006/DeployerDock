@@ -1,4 +1,4 @@
-# Project: Git Website Builder and Deployer
+# DeployerDock: Git Website Builder and Deployer
 
 This project automates the deployment process for websites hosted on Git. It takes a Git repository URL as input, deploys the website, and provides the deployed website's ID and URL in the format `https://id.localhost:3001`.
 
@@ -12,13 +12,13 @@ This project automates the deployment process for websites hosted on Git. It tak
 1. Clone this repository:
 
    ```bash
-   git clone https://github.com/pushpitjain2006/Git-Website-Builder-Deployer-project.git
+   git clone https://github.com/pushpitjain2006/DeployerDock.git
    ```
 
 2. Navigate to the project directory:
 
    ```bash
-   cd Git-Website-Builder-Deployer-project
+   cd DeployerDock
    ```
 
 ## Running the Project
