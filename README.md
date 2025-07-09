@@ -2,6 +2,9 @@
 
 This project automates the deployment process for websites hosted on Git. It takes a Git repository URL as input, deploys the website, and provides the deployed website's ID and URL in the format `https://id.localhost:3001`.
 
+![videoframe_2310](https://github.com/user-attachments/assets/fdd14e5a-f2cf-4c1d-8676-971b4f66dc2d)
+[https://youtu.be/BVpSEqu5ej4/]
+
 ## Prerequisites
 
 - Node.js and npm (or yarn) installed on your system.
@@ -93,6 +96,7 @@ Once all services are running, navigate to the frontend at `http://localhost:517
 
 ## Deployment Output
 
+![videoframe_101036](https://github.com/user-attachments/assets/81140253-5009-4986-b3c4-a7d0b65b5e5f)
 Upon successful deployment, the project will return the following information:
 
 - **Deployed Website ID:** A unique identifier assigned to the deployed website by the hosting platform.
